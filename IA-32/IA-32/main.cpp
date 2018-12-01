@@ -1,12 +1,16 @@
 #include <stdio.h>
+#include <string>
+#include <iostream>
+
 void decToBin(int num) {
-	while (num != 0)
+	using namespace std;
+	string a;
+	while (num > 0)
 	{
-		int rem = num % 2;
+		a.insert(0, to_string(num % 2));
 		num /= 2;
-		printf("%d",rem);
 	}
-	printf("\n");
+	cout << "c++ = " << a << endl;
 }
 
 int main() {
