@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 
 void decToBin(int num) {
 	using namespace std;
@@ -20,16 +21,14 @@ void pushBinary() {
 	result.push_back(temp);
 }
 
-int main(/*int argc, char** argv*/) {
+int main(int argc, char** argv) {
 
-	/*if (argc < 2) {
+	if (argc < 2) {
 		printf("Error! Missing parameters");
 			return 0;
 	}
 
-	int num = int(argv[1]);*/
-	int num = 1234;
-
+	int num = atoi(argv[1]);
 	
 	decToBin(num);
 	__asm {
@@ -37,7 +36,8 @@ int main(/*int argc, char** argv*/) {
 		push ebx
 		push ecx
 		push edx
-		//-------------------------
+		//---------------------------------------------------------------------------------------------
+
 		mov eax, num				//eax = num
 		xor edx, edx				//edx = 0,			kitaip neveikia dalyba
 		cmp eax,0					
@@ -45,7 +45,7 @@ int main(/*int argc, char** argv*/) {
 		mov ebx, eax				//ebx = eax
 
 		start:
-			mov eax, ebx				//ebx = eax,		perkeliama kad po operacijos nedingtu skaicius
+			mov eax, ebx			//ebx = eax,		perkeliama kad po operacijos nedingtu skaicius
 			mov ecx, 2				//ecx = 2,			kad butu galima dalyba is 
 			div ecx					//eax = num / 2,	dalyba is 2
 			mov ecx, eax			//ecx = eax,		gautas dalybos skaicius perkeliamas i ecx
@@ -53,16 +53,16 @@ int main(/*int argc, char** argv*/) {
 			sub ebx, ecx			//ebx = ebx - ecx,	gaunama liekana
 
 			mov temp, ebx			//liekana perkeliama i int, kad butu galima ikelti i vector
-			mov ebx, eax			//del kazkokiu priezasciu eax, ecx ir edx value pasikeicia
+			mov ebx, eax			//del kazkokiu priezasciu eax, ecx ir edx value pasikeicia -
+									// - todel issaugau skaiciu i ebx kuris nepasikeicia
 			call offset pushBinary	//liekana perkeliama i vector
 			mov eax,0				//reikia pakeisti i 0 nes kitaip del neaiskiu priezasciu i kita value pasikeicia
 			mov ecx,0
 			mov edx,0
 			cmp ebx, 0				//tikrina ar likes skaicius daugiau uz 0
 				jg start			//jei ne nulis tesiama toliau
-
 		end:	
-		//-------------------------
+		//---------------------------------------------------------------------------------------------
 		pop eax
 		pop ebx
 		pop ecx
@@ -72,5 +72,4 @@ int main(/*int argc, char** argv*/) {
 	for (int i = result.size()-1; i >= 0; i--) {	//reikia isvesti atbuline tvarka
 		std::cout<<result[i];
 	}
-	getchar();
 }
